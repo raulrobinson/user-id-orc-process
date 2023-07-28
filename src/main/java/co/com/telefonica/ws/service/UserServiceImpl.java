@@ -34,11 +34,11 @@ public class UserServiceImpl implements UserService {
         this.odsUserRepository = odsUserRepository;
     }
     @Override
-    public String getRegistersPaginadosPorLoadDateOdsUser(Date loadDate, int pageSize, int pageNumber) {
+    public ResponseEntity<String> getRegistersPaginadosPorLoadDateOdsUser(Date loadDate, int pageSize, int pageNumber) {
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
         Page<OdsUser> page = odsUserRepository.findByLoadDate(loadDate, pageRequest);
         var userList =  convertBatchOdsToPgPage(page);
-        return sendToPgThree(userList);
+        return new ResponseEntity<>(sendToPgThree(userList),HttpStatus.OK);
     }
     public String sendToPgThree(List<PgUserDTO> userList) {
         try {
